@@ -9,7 +9,7 @@ var corsOptions = {
 };
 
 app.use(express.json())
-app.use(express.static('kepek'))
+app.use(express.static('images'))
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -60,4 +60,4 @@ function initial() {
     id: 3,
     name: "admin"
   });
-}
+} 

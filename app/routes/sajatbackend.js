@@ -19,7 +19,7 @@ module.exports = function(app) {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'web_zarodoga'
+      database: 'fitnessapp_zarodoga'
     })
     
     connection.connect()
@@ -156,5 +156,90 @@ app.delete('/torles', (req, res) => {
   })
   connection.end()
 })
+
+
+
+app.post('/kaja_kategoriak_noi', (req, res) => {
+
+  kapcsolat()
+  connection.query(`SELECT * FROM kaja_noi 
+  INNER JOIN suly_mertek ON kaja_noi.suly_mertek=suly_mertek.mertek_id 
+  INNER JOIN suly_fajta on kaja_noi.suly_fajta = suly_fajta.suly_id
+  WHERE kaja_kategoria =${req.body.bevitel1}`, (err, rows, fields) => {
+    if (err) throw err
+
+    console.log(rows)
+    res.send(rows)
+  })
+  connection.end()
+});
+
+
+//-----------ferfi kategoria----------------
+app.post('/kaja_kategoriak_ferfi', (req, res) => {
+
+  kapcsolat()
+  connection.query(`SELECT * FROM kaja_ferfi
+                    INNER JOIN suly_mertek ON kaja_ferfi.suly_mertek = suly_mertek.mertek_id
+                    INNER JOIN suly_fajta ON kaja_ferfi.suly_fajta = suly_fajta.suly_id
+                   WHERE kaja_kategoria=${req.body.bevitel1}`, (err, rows, fields) => {
+    if (err) throw err
+
+    console.log(rows)
+    res.send(rows)
+  })
+  connection.end()
+});
+
+//----------üzenetfelvitel-------------------
+app.post('/uzenetfelvitel', (req, res) => {
+  kapcsolat()
+  
+      connection.query(`INSERT INTO csevego VALUES (NULL, "${req.body.bevitel1}","${req.body.bevitel2}" )`, (err, rows, fields) => {
+          if (err) {
+              res.send("HIBA")
+              console.log("HIBA")
+          }
+          else {
+              console.log(rows)
+              res.send(rows)
+          }
+  
+  
+  
+      })
+      connection.end()
+
+    })
+
+//--------------------blog magyar---------------------
+
+app.get('/blog', (req, res) => {
+  kapcsolat()
+  
+  connection.query(`SELECT * FROM blog WHERE nyelv=0`, (err, rows, fields) => {
+  if (err) throw err
+  
+  console.log(rows)
+  res.send(rows)
+  })
+  connection.end() 
+  })
+
+//--------------------blog angol---------------------
+
+ app.get('/blogAngol', (req, res) => {
+  kapcsolat()
+  
+  connection.query(`SELECT * FROM blog WHERE nyelv=1`, (err, rows, fields) => {
+  if (err) throw err
+  
+  console.log(rows)
+  res.send(rows)
+  })
+  connection.end() 
+  })
+
+
 
 };
