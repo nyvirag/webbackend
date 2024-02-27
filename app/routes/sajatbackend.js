@@ -141,7 +141,7 @@ app.post('/keresszoveg', (req, res) => {
     })
   
    
-//---------TÖRLÉS-------------------
+//---------TÖRLÉS csevego-------------------
 app.delete('/torles', (req, res) => {
   kapcsolat()
   connection.query(`DELETE FROM csevego WHERE csevego_id=${req.body.bevitel1}`, function (err, rows, fields) {
@@ -158,6 +158,23 @@ app.delete('/torles', (req, res) => {
 })
 
 
+
+
+//---------TÖRLÉS blog-------------------
+app.delete('/torlesblog', (req, res) => {
+  kapcsolat()
+  connection.query(`DELETE FROM blog WHERE blog_id=${req.body.bevitel1}`, function (err, rows, fields) {
+    if (err) {
+      console.log("Hiba!")
+      res.send("Hiba!")
+    }
+    else {
+    console.log("A törlés sikeres")
+    res.send("A törlés sikeres")
+  }
+  })
+  connection.end()
+})
 
 app.post('/kaja_kategoriak_noi', (req, res) => {
 
@@ -212,12 +229,33 @@ app.post('/uzenetfelvitel', (req, res) => {
 
     })
 
+//-------------ujblog------------------------
+app.post('/ujblog', (req, res) => {
+  kapcsolat()
+  
+      connection.query(`INSERT INTO blog VALUES (NULL, "${req.body.bevitel1}","${req.body.bevitel2}" )`, (err, rows, fields) => {
+          if (err) {
+              res.send("HIBA")
+              console.log("HIBA")
+          }
+          else {
+              console.log(rows)
+              res.send(rows)
+          }
+  
+  
+  
+      })
+      connection.end()
+
+    })
+
 //--------------------blog magyar---------------------
 
 app.get('/blog', (req, res) => {
   kapcsolat()
   
-  connection.query(`SELECT * FROM blog WHERE nyelv=0`, (err, rows, fields) => {
+  connection.query(`SELECT * FROM blog`, (err, rows, fields) => {
   if (err) throw err
   
   console.log(rows)
