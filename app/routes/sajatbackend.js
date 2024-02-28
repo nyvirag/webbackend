@@ -233,10 +233,11 @@ app.post('/uzenetfelvitel', (req, res) => {
 app.post('/ujblog', (req, res) => {
   kapcsolat()
   
-      connection.query(`INSERT INTO blog VALUES (NULL, "${req.body.bevitel1}","${req.body.bevitel2}" )`, (err, rows, fields) => {
+      connection.query(`INSERT INTO blog VALUES (NULL, "${req.body.bevitel1}", "${req.body.bevitel2}", "${req.body.bevitel3}")`, (err, rows, fields) => {
+       // connection.query(`INSERT INTO blog (blog_datum, blog_uzenet, blog_nyelv) VALUES ('${bevitel1}', '${bevitel2}', '${bevitel3}')`, (err, rows, fields) => {
           if (err) {
               res.send("HIBA")
-              console.log("HIBA")
+              console.log("HIBA", err)
           }
           else {
               console.log(rows)
