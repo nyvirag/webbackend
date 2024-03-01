@@ -280,5 +280,57 @@ app.get('/blog', (req, res) => {
   })
 
 
+//------------------------------------------------
+app.post('/keresnoikaja', (req, res) => {
+  kapcsolat()
+  
+  connection.query(`SELECT * FROM kaja_noi 
+					INNER JOIN kaja_kategoria ON kaja_noi.kaja_kategoria=kaja_kategoria.kategoria_id 
+					INNER JOIN suly_mertek ON kaja_noi.suly_mertek=suly_mertek.mertek_id 
+					WHERE suly_fajta = ${req.body.bevitel1}`, (err, rows, fields) => {
+  if (err) throw err
+  
+  console.log(rows)
+  res.send(rows)
+      console.log(req.body.bevitel1)
+  })
+  connection.end() 
+  })
+
+
+
+
+  //------------------------------------------------
+
+  app.post('/keresferfikaja', (req, res) => {
+    kapcsolat()
+    
+    connection.query(`SELECT * FROM kaja_ferfi 
+            INNER JOIN kaja_kategoria ON kaja_ferfi.kaja_kategoria=kaja_kategoria.kategoria_id 
+            INNER JOIN suly_mertek ON kaja_ferfi.suly_mertek=suly_mertek.mertek_id 
+            WHERE suly_fajta = ${req.body.bevitel1}`, (err, rows, fields) => {
+    if (err) throw err
+    
+    console.log(rows)
+    res.send(rows)
+    })
+    connection.end() 
+    })
+  
+
+  //--------------------------------------------------------------------
+app.get('/sulyok', (req, res) => {
+  kapcsolat()
+  
+  connection.query(`SELECT * FROM suly_fajta`, (err, rows, fields) => {
+  if (err) throw err
+  
+  console.log(rows)
+  res.send(rows)
+  })
+  connection.end() 
+  })
+
+
 
 };
